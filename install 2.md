@@ -1,0 +1,6 @@
+Redirecting\...
+
+# Redirecting\...
+
+[Click here if you are not
+redirected.](https://buck.build/setup/getting_started.html)

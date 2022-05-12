@@ -1,0 +1,106 @@
+<div>
+
+JavaScript is disabled on your browser.
+
+</div>
+
+::: {role="banner"}
+::: fixedNav
+::: topNav
+[]{#navbar.top}
+
+::: skipNav
+[Skip navigation links](#skip.navbar.top "Skip navigation links")
+:::
+
+[]{#navbar.top.firstrow}
+
+-   [Overview](../../../../../../index.html)
+-   Package
+-   Class
+-   [Tree](package-tree.html)
+-   [Deprecated](../../../../../../deprecated-list.html)
+-   [Index](../../../../../../index-all.html)
+-   [Help](../../../../../../help-doc.html)
+:::
+
+::: subNav
+-   [All Classes](../../../../../../allclasses.html)
+
+```{=html}
+<!-- -->
+```
+-   SEARCH:
+
+<div>
+
+<div>
+
+JavaScript is disabled on your browser.
+
+</div>
+
+</div>
+
+[]{#skip.navbar.top}
+:::
+:::
+
+::: navPadding
+ 
+:::
+:::
+
+::: {role="main"}
+::: header
+# Package com.facebook.buck.core.cell.exception {#package-com.facebook.buck.core.cell.exception .title title="Package"}
+:::
+
+::: contentContainer
+-   +-----------------------------------+-----------------------------------+
+    | Exception                         | Description                       |
+    +===================================+===================================+
+    | [UnknownCellException](UnknownCe  | ::: block                         |
+    | llException.html "class in com.fa | Exception that represents a build |
+    | cebook.buck.core.cell.exception") | target attempting to use a cell   |
+    |                                   | which doesn\'t exist.             |
+    |                                   | :::                               |
+    +-----------------------------------+-----------------------------------+
+
+    : Exception Summary[ ]{.tabEnd}
+:::
+:::
+
+::: bottomNav
+[]{#navbar.bottom}
+
+::: skipNav
+[Skip navigation links](#skip.navbar.bottom "Skip navigation links")
+:::
+
+[]{#navbar.bottom.firstrow}
+
+-   [Overview](../../../../../../index.html)
+-   Package
+-   Class
+-   [Tree](package-tree.html)
+-   [Deprecated](../../../../../../deprecated-list.html)
+-   [Index](../../../../../../index-all.html)
+-   [Help](../../../../../../help-doc.html)
+:::
+
+::: subNav
+-   [All Classes](../../../../../../allclasses.html)
+
+<div>
+
+<div>
+
+JavaScript is disabled on your browser.
+
+</div>
+
+</div>
+
+[]{#skip.navbar.bottom}
+:::
