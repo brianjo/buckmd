@@ -1,37 +1,18 @@
-::: {#fb-root}
-:::
+/\* \* Copyright (c) Facebook, Inc. and its affiliates. \* \* Licensed
+under the Apache License, Version 2.0 (the \"License\"); \* you may not
+use this file except in compliance with the License. \* You may obtain a
+copy of the License at \* \* http://www.apache.org/licenses/LICENSE-2.0
+\* \* Unless required by applicable law or agreed to in writing,
+software \* distributed under the License is distributed on an \"AS IS\"
+BASIS, \* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+or implied. \* See the License for the specific language governing
+permissions and \* limitations under the License. \*/ {namespace
+buck.index} /\*\*\*/ {template .soyweb} {call buck.page} {param navid:
+\'home\' /} {param title: \'A fast build tool\' /} {param description}
+Buck is a build system developed and used by Facebook. It encourages the
+creation of small, reusable modules consisting of code and resources,
+and supports a variety of languages. {/param} {param content}
 
-::: topbar
-[](http://buck.build/)
-
-# Buck
-
--   
--   [Docs](/setup/getting_started.html)
--   [Issues](https://github.com/facebook/buck/issues)
--   [GitHub](https://github.com/facebook/buck)
-:::
-
-::: socialBanner
-Support Ukraine. [Help Provide Humanitarian Aid to
-Ukraine](https://opensource.fb.com/support-ukraine).
-:::
-
-::: hero
-::: width
-# A high-performance build tool
-
-[Getting
-Started](/setup/getting_started.html){.button} [GitHub](https://github.com/facebook/buck){.button}
-
-![Chrome Tracing
-Sample](/static/buck-build-15fps.gif){#super_console_sample}
-:::
-:::
-
-::: {.section .content}
-::: width
-::: overview
 Buck is a build system developed and used by Facebook. It encourages the
 creation of small, reusable modules consisting of code and resources,
 and supports a variety of languages on many platforms.
@@ -50,16 +31,12 @@ Buck can help you and your team in many ways:
     your inputs, not their timestamps to figure out what needs to be
     built. As a result, incremental builds should always be correct, so
     there\'s no need to perform a clean build.
--   **Understand your dependencies.** With
-    [`buck query`](/command/query.html), you can better understand your
-    dependencies and what is required to build your product.
--   **Integrate with your IDE.** With
-    [`buck project`](/command/project.html), your project can be better
-    understood by your IDE, making you and your team more productive.
-:::
-:::
-:::
+-   **Understand your dependencies.** With {sp}{call
+    buck.cmd_link}{param name: \'query\' /}{/call}, you can better
+    understand your dependencies and what is required to build your
+    product.
+-   **Integrate with your IDE.** With {sp}{call buck.cmd_link}{param
+    name: \'project\' /}{/call}, your project can be better understood
+    by your IDE, making you and your team more productive.
 
-::: width
-© Copyright Facebook, 2013 - 2020
-:::
+{/param} {/call} {/template}

@@ -1,25 +1,16 @@
-::: {#fb-root}
-:::
-
-::: topbar
-[](http://buck.build/)
-
-# Buck
-
--   
--   [Docs](/setup/getting_started.html)
--   [Issues](https://github.com/facebook/buck/issues)
--   [GitHub](https://github.com/facebook/buck)
-:::
-
-::: socialBanner
-Support Ukraine. [Help Provide Humanitarian Aid to
-Ukraine](https://opensource.fb.com/support-ukraine).
-:::
-
-::: {.section .content}
-::: width
-# Getting Started
+/\* \* Copyright (c) Facebook, Inc. and its affiliates. \* \* Licensed
+under the Apache License, Version 2.0 (the \"License\"); \* you may not
+use this file except in compliance with the License. \* You may obtain a
+copy of the License at \* \* http://www.apache.org/licenses/LICENSE-2.0
+\* \* Unless required by applicable law or agreed to in writing,
+software \* distributed under the License is distributed on an \"AS IS\"
+BASIS, \* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+or implied. \* See the License for the specific language governing
+permissions and \* limitations under the License. \*/ {namespace
+buck.getting_started} /\*\*\*/ {template .soyweb} {call buck.header}
+{param title: \'Getting Started\' /} {param navid:
+\'setup_getting_started\' /} {param description} How to setup your
+project to use Buck. {/param} {/call}
 
 **Note:** If you are a member of an organization that is using Buck,
 please consult with your colleagues to see if your organization has
@@ -30,12 +21,12 @@ documentation here.
 
 ## Quick Starts for various target platforms
 
-::: overview
+::: {.{css .overview}}
 ::: toggler
-  --------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **Platform:**         [Android](javascript:void(0);){.button-android onclick="display('platform', 'android')"}[iOS](javascript:void(0);){.button-ios onclick="display('platform', 'ios')"}[Java](javascript:void(0);){.button-java onclick="display('platform', 'java')"}[Other](javascript:void(0);){.button-other onclick="display('platform', 'other')"}
-  **Development OS:**   [macOS](javascript:void(0);){.button-mac onclick="display('os', 'mac')"}[Linux](javascript:void(0);){.button-linux onclick="display('os', 'linux')"}[Windows](javascript:void(0);){.button-windows onclick="display('os', 'windows')"}
-  --------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  --------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  **Platform:**         [Android](javascript:void(0);){.button-android onclick="display('platform', 'android')"} [iOS](javascript:void(0);){.button-ios onclick="display('platform', 'ios')"} [Java](javascript:void(0);){.button-java onclick="display('platform', 'java')"} [Other](javascript:void(0);){.button-other onclick="display('platform', 'other')"}
+  **Development OS:**   [macOS](javascript:void(0);){.button-mac onclick="display('os', 'mac')"} [Linux](javascript:void(0);){.button-linux onclick="display('os', 'linux')"} [Windows](javascript:void(0);){.button-windows onclick="display('os', 'windows')"}
+  --------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 :::
 
 Development for iOS is supported only on macOS.
@@ -104,12 +95,14 @@ the relevant information:
 If you are doing development work on the Buck source, you must enable
 the use of symlinks on Windows. In the **Group Policy Editor**, go to:
 
+    {literal}
     Local Computer Policy 
       Computer Configuration 
         Windows Settings 
           Security Settings      
             Local Policies   
               User Rights Assignment
+    {/literal}
 
 You should have a policy called **Create symbolic links**. Enable it for
 any users who will be running Buck on the local computer. You could
@@ -177,7 +170,11 @@ Buck regularly deploys Windows binaries to
 installed](https://chocolatey.org/install), you can install Buck by
 running:
 
+{literal}
+
     choco install buck
+
+{/literal}
 
 This automatically adds buck to Chocolatey\'s path, and lets you run
 commands just by typing `buck` on the command line.
@@ -202,9 +199,8 @@ Buck is available as a bottle on [Homebrew](http://brew.sh/).
     turn contains binaries for the Java compiler (`javac`) and Java
     runtime (`java`).
 
-```{=html}
-<!-- -->
-```
+{literal}
+
     # Install command line tools. NOTE: If you have Xcode installed, these may
     # already be installed.
     xcode-select --install
@@ -215,16 +211,7 @@ Buck is available as a bottle on [Homebrew](http://brew.sh/).
     +brew tap AdoptOpenJDK/openjdk
     +brew install --cask adoptopenjdk8
 
-> If you do not have Xcode installed and you get the following error
->
->     error: active developer path ("/Applications/Xcode.app/Contents/Developer") does not exist
->
-> then run
->
->     xcode-select --reset 
->
-> to reset the command-line tools path to where the command line tools
-> are installed.
+{/literal} {call .active_developer_path /}
 
 ### Brew install
 
@@ -232,14 +219,22 @@ You have two choices when using Homebrew. You can choose to get the
 latest binary
 [release](https://github.com/facebook/buck/releases/latest):
 
+{literal}
+
     brew tap facebook/fb
     brew install buck
 
+{/literal}
+
 Or, you can get the latest code and build it locally:
+
+{literal}
 
     brew update
     brew tap facebook/fb
     brew install --HEAD buck
+
+{/literal}
 
 ## Build from Source
 
@@ -263,13 +258,16 @@ prerequisites:
 -   [Watchman](https://facebook.github.io/watchman/docs/install)
 
 > We strongly recommended that you install Watchman. With watchman, Buck
-> uses a daemon ([buckd](/command/buckd.html)) which prevents Buck from
-> needing to parse all of your [build files](/concept/build_file.html)
-> every time you build---and it caches some other components of your
-> build as well.
+> uses a daemon ([buckd](%7BROOT%7Dcommand/buckd.html)) which prevents
+> Buck from needing to parse all of your {call buck.concept_link}{param
+> page: \'build_file\' /}{param name: \'build files\' /}{/call} every
+> time you build---and it caches some other components of your build as
+> well.
 
 You can use [Homebrew](http://homebrew.sh) to install many of the
 prerequisites on a Mac.
+
+{literal}
 
     # Install Command Line tools first. NOTE: If you have Xcode installed, these may
     # already be installed.
@@ -282,28 +280,17 @@ prerequisites on a Mac.
     # Then...
     brew install ant python git watchman
 
-> If you do not have Xcode installed and you get the following error
->
->     error: active developer path ("/Applications/Xcode.app/Contents/Developer") does not exist
->
-> then run
->
->     xcode-select --reset 
->
-> to reset the command-line tools path to where the command line tools
-> are installed.
+{/literal} {call .active_developer_path /}
 
 ### Build
 
 Once you have the above tools installed, you can build Buck as follows:
 
-    git clone https://github.com/facebook/buck.git
-    cd buck
-    ant
-    ./bin/buck build --show-output buck
-    buck-out/gen/programs/buck.pex --help
+{call buck.installationInstructions /}
 
 If everything worked correctly, you should see something like:
+
+{literal}
 
     buck build tool
     usage:
@@ -331,6 +318,7 @@ If everything worked correctly, you should see something like:
     options:
      --help         : Shows this screen and exits.
      --version (-V) : Show version number.
+    {/literal}
 
 Because you will likely be running `./bin/buck` often, you should add it
 to your path so that you can simply run `buck` from the command line.
@@ -350,24 +338,33 @@ prerequisites:
 -   [Git](http://git-scm.com/download)
 -   [Watchman](https://facebook.github.io/watchman/docs/install.html)
 
-> With watchman, Buck will use [a daemon](/command/buckd.html) which
-> will prevent Buck from parsing all of your [build
-> files](/concept/build_file.html) every time and cache some other
-> things as well. It is strongly recommended that you install Watchman.
+> With watchman, Buck will use [a daemon](%7BROOT%7Dcommand/buckd.html)
+> which will prevent Buck from parsing all of your {call
+> buck.concept_link}{param page: \'build_file\' /}{param name: \'build
+> files\' /}{/call} every time and cache some other things as well. It
+> is strongly recommended that you install Watchman.
 
 You can use [Chocolatey](https://chocolatey.org/) to install many of the
 prerequisites on Windows.
 
+{literal}
+
     choco install jdk8 ant python2 git
     # install watchman as stated in the watchman prerequisite link above
+
+{/literal}
 
 You can use your distro\'s package manager (e.g., `apt`) to install many
 of the prerequisites on Linux. For example on Ubuntu 16.04, you can run
 the following:
 
+{literal}
+
     sudo apt-get update
     sudo apt-get install default-jdk ant python2 git
     # install watchman as stated in the watchman prerequisite link above
+
+{/literal}
 
 > For some distros, the default packages may be older than what you
 > would like. In those cases, either build those packages from source,
@@ -385,53 +382,42 @@ values *in the following order*:
 -   `ANDROID_SDK` environment variable
 -   `ANDROID_HOME` environment variable
 -   `ANDROID_SDK_ROOT` environment variable
--   The value of the
-    [`[android].sdk_path`](/files-and-dirs/buckconfig.html#android.sdk_path)
-    property in `.buckconfig`.
+-   The value of the {call buckconfig.android_sdk_path /} property in
+    `.buckconfig`.
 
 To find the location of a specific **NDK**, Buck looks at the following
 values *in the following order*:
 
 -   `ANDROID_NDK` environment variable.
 -   `NDK_HOME` environment variable.
--   The value of the
-    [`[ndk].ndk_path`](/files-and-dirs/buckconfig.html#ndk.ndk_path)
-    property in `.buckconfig`.
+-   The value of the {call buckconfig.ndk_ndk_path /} property in
+    `.buckconfig`.
 
 If you have **multiple NDKs** installed into a single enclosing
 directory, you can specify this directory to Buck using either of the
 following values:
 
 -   `ANDROID_NDK_REPOSITORY` environment variable.
--   The
-    [`[ndk].ndk_repository_path`](/files-and-dirs/buckconfig.html#ndk.ndk_repository_path)
-    property in `.buckconfig`.
+-   The {call buckconfig.ndk_ndk_repository_path /} property in
+    `.buckconfig`.
 
 If you specify *both* the environment variable and the `.buckconfig`
 setting, the environment variable takes precedence.
 
 If you specify an NDK repository, Buck selects the NDK based on the
-version that you specify in the
-[`[ndk].ndk_version`](/files-and-dirs/buckconfig.html#ndk.ndk_version)
+version that you specify in the {call buckconfig.ndk_ndk_version /}
 property of `.buckconfig`.
 
 ### Build
 
 Once you have the above tools installed, you can build Buck as follows:
 
-    git clone https://github.com/facebook/buck.git
-    cd buck
-    ant
-    .\bin\buck build --show-output buck
-    buck-out\gen\programs\buck.pex --help
-
-    git clone https://github.com/facebook/buck.git
-    cd buck
-    ant
-    ./bin/buck build --show-output buck
-    buck-out/gen/programs/buck.pex --help
+{call buck.installationInstructions} {param isWindows: true /} {/call}
+{call buck.installationInstructions /}
 
 If everything worked correctly, you should see something like:
+
+{literal}
 
     buck build tool
     usage:
@@ -459,6 +445,8 @@ If everything worked correctly, you should see something like:
      --help         : Shows this screen and exits.
      --version (-V) : Show version number.
 
+{/literal}
+
 Because you will likely be running `.\bin\buck` often, you should add it
 to your path so that you can simply run `buck` from the command line.
 
@@ -471,8 +459,12 @@ Now that Buck is installed, it is time to use Buck in a sample project.
 
 ### Clone [Buck samples repo](https://github.com/fbsamples/bucksamples/)
 
+{literal}
+
     git clone https://github.com/fbsamples/bucksamples.git
     cd bucksamples/cross-platform-scale-2015-demo/
+
+{/literal}
 
 ### Key iOS files
 
@@ -482,37 +474,42 @@ project. From the root directory, you will find:
 -   `ios/main.m`: The main iOS file supported by other views,
     controllers and associated resources.
 
--   `ios/BUCK`: The [build file](/concept/build_file.html) is what makes
-    Buck work. It defines all the [build
-    rule](/concept/build_rule.html)s for your source code. A [build
-    rule](/concept/build_rule.html) may also include dependencies (via
-    `deps`), which may be from other [build
-    file](/concept/build_file.html)s.
+-   `ios/BUCK`: The {call buck.build_file /} is what makes Buck work. It
+    defines all the {call buck.build_rule /}s for your source code. A
+    {call buck.build_rule /} may also include dependencies (via `deps`),
+    which may be from other {call buck.build_file /}s.
 
--   `.buckconfig`: A [`.buckconfig`](/files-and-dirs/buckconfig.html)
-    file allows for various flag and alias settings for any project
-    (even beyond iOS) within the root directory.
+-   `.buckconfig`: A {call buck.buckconfig_link /} file allows for
+    various flag and alias settings for any project (even beyond iOS)
+    within the root directory.
 
 ### Build the iOS sample
 
-In order to build the app, you use the
-[`buck build`](/command/build.html) command, specifying your app as the
-target. The target may be defined in the
-[`[alias]`](/files-and-dirs/buckconfig.html#alias) section in the
-`.buckconfig` file or it would be the name of your iOS project prepended
-by `//[the directory where your project is located]:` (e.g.,
+In order to build the app, you use the {call buck.cmd_build /} command,
+specifying your app as the target. The target may be defined in the
+{call buckconfig.alias /} section in the `.buckconfig` file or it would
+be the name of your iOS project prepended by
+`//[the directory where your project is located]:` (e.g.,
 `//ios:BuckDemoApp`).
+
+{literal}
 
     # From the root `cross-platform-scale-2015-demo/` directory
     # demo_app_ios is an alias in .buckconfig for //ios::BuckDemoApp. Either works.
     buck build demo_app_ios
 
+{/literal}
+
 You should see output similar to:
+
+{literal}
 
     buck build demo_app_ios
     [-] PROCESSING BUCK FILES...FINISHED 0.0s [100%]
     [-] DOWNLOADING... (0.00 B/S AVG, TOTAL: 0.00 B, 0 Artifacts)
     [-] BUILDING...FINISHED 0.7s [100%] (1/1 JOBS, 0 UPDATED, 0 [0.0%] CACHE MISS)
+
+{/literal}
 
 > The first time you build, you will most likely see a longer time and
 > cache misses. Subsequent builds should be much faster, with minimal
@@ -523,9 +520,11 @@ Buck outputs its results in the `buck-out/` directory.
 ### Run the Built iOS App
 
 Now that you know your app has built successfully, you can install and
-run the app with [`buck install`](/command/install.html). This command
-both compiles and installs the application on the iOS simulator. Using
-the `--run` flag will launch the simulator as well.
+run the app with {call buck.cmd_install /}. This command both compiles
+and installs the application on the iOS simulator. Using the `--run`
+flag will launch the simulator as well.
+
+{literal}
 
     buck install --run demo_app_ios
     Successfully launched demo_app_ios. To debug, run: lldb -p 50240
@@ -533,6 +532,8 @@ the `--run` flag will launch the simulator as well.
     [-] DOWNLOADING... (0.00 B/S AVG, TOTAL: 0.00 B, 0 Artifacts)
     [-] BUILDING...FINISHED 0.3s [100%] (1/1 JOBS, 0 UPDATED, 0 [0.0%] CACHE MISS)
     [-] INSTALLING...FINISHED 38.7s
+
+{/literal}
 
 ### Success!
 
@@ -550,8 +551,12 @@ Now that Buck is installed, it is time to use Buck in a sample project.
 
 ### Clone [Buck samples repo](https://github.com/fbsamples/bucksamples/)
 
+{literal}
+
     git clone https://github.com/fbsamples/bucksamples.git
     cd bucksamples/cross-platform-scale-2015-demo/
+
+{/literal}
 
 ### Key Android Files
 
@@ -561,16 +566,15 @@ Android project. From the root directory, you will find:
 -   `android/java/com/facebook/buck/demo/Hello.java`: The main Java file
     supported by other associated resources.
 
--   `android/BUCK`: The [build file](/concept/build_file.html) is what
-    makes Buck work. It defines all the [build
-    rule](/concept/build_rule.html)s for your source code. A [build
-    rule](/concept/build_rule.html) can also include dependencies
-    (generally via `deps`), which may be from other [build
-    file](/concept/build_file.html)s, as in the case of this app.
+-   `android/BUCK`: The {call buck.build_file /} is what makes Buck
+    work. It defines all the {call buck.build_rule /}s for your source
+    code. A {call buck.build_rule /} can also include dependencies
+    (generally via `deps`), which may be from other {call
+    buck.build_file /}s, as in the case of this app.
 
--   `.buckconfig`: A [`.buckconfig`](/files-and-dirs/buckconfig.html)
-    file allows for various flag and alias settings for any project
-    (even beyond Android) within the root directory.
+-   `.buckconfig`: A {call buck.buckconfig_link /} file allows for
+    various flag and alias settings for any project (even beyond
+    Android) within the root directory.
 
 ### Configure the environment
 
@@ -579,64 +583,69 @@ let Buck know the locations of Android SDK and Android NDK.
 
 First of all, check for existing variables:
 
+{literal}
+
     $ env | grep ANDROID_
     ANDROID_HOME=<path-to-sdk>
     ANDROID_NDK_REPOSITORY=<path-to-ndk>
     ANDROID_SDK=<path-to-sdk>
     ANDROID_SDK_ROOT=<path-to-sdk>
 
+{/literal}
+
 Set the missing variables to the locations of Android SDK and Android
-NDK or set the paths in your
-[`.buckconfig`](/files-and-dirs/buckconfig.html) file.
+NDK or set the paths in your {call buck.buckconfig_link /} file.
 
 Before building make sure you installed correct build tools and a target
 in Android SDK and correct version of Android NDK. You can find the
-required versions of these tools in
-[`.buckconfig`](/files-and-dirs/buckconfig.html):
+required versions of these tools in {call buck.buckconfig_link /}:
 
--   See
-    [`[android].build_tools_version`](/files-and-dirs/buckconfig.html#android.build_tools_version)
-    to get the version of build tools in Android SDK.
--   [`[android].compile_sdk_version`](/files-and-dirs/buckconfig.html#android.compile_sdk_version)
-    points to the Android SDK to build against.
--   [`[ndk].ndk_version`](/files-and-dirs/buckconfig.html#ndk.ndk_version)
-    points to the version of Android NDK.
+-   See {call buckconfig.android_build_tools_version /} to get the
+    version of build tools in Android SDK.
+-   {call buckconfig.android_compile_sdk_version /} points to the
+    Android SDK to build against.
+-   {call buckconfig.ndk_ndk_version /} points to the version of Android
+    NDK.
 
 Optionally:
 
--   [`[android].sdk_path`](/files-and-dirs/buckconfig.html#android.sdk_path)
-    is an absolute path to the Android SDK.
--   [`[ndk].ndk_path`](/files-and-dirs/buckconfig.html#ndk.ndk_path) is
-    an absolute path to the Android NDK.
--   [`[ndk].ndk_repository_path`](/files-and-dirs/buckconfig.html#ndk.ndk_repository_path)
-    is an absolute path to a directory that contains multiple Android
-    NDKs in subdirectories. Buck selects which NDK to use based on the
-    value of the
-    [`[ndk].ndk_version`](/files-and-dirs/buckconfig.html#ndk.ndk_version)
-    property in `.buckconfig`.
+-   {call buckconfig.android_sdk_path /} is an absolute path to the
+    Android SDK.
+-   {call buckconfig.ndk_ndk_path /} is an absolute path to the Android
+    NDK.
+-   {call buckconfig.ndk_ndk_repository_path /} is an absolute path to a
+    directory that contains multiple Android NDKs in subdirectories.
+    Buck selects which NDK to use based on the value of the {call
+    buckconfig.ndk_ndk_version /} property in `.buckconfig`.
 
 ### Build the Android sample
 
-In order to build the app, you use the
-[`buck build`](/command/build.html)command, specifying your app as the
-target. The target may be defined in the
-[`[alias]`](/files-and-dirs/buckconfig.html#alias) section in the
-[`.buckconfig`](/files-and-dirs/buckconfig.html) file or it would be the
-name of your Android project prepended by
+In order to build the app, you use the {call buck.cmd_build /} command,
+specifying your app as the target. The target may be defined in the
+{call buckconfig.alias /} section in the {call buck.buckconfig_link /}
+file or it would be the name of your Android project prepended by
 `//[the directory where your project is located]:` (e.g.,
 `//android:demo-app`).
+
+{literal}
 
     # From the root `cross-platform-scale-2015-demo/` directory
     # demo_app_android is an alias in .buckconfig for //android:demo-app. Either works.
     buck build demo_app_android
 
+{/literal}
+
 You should see output similar to:
+
+{literal}
 
     export ANDROID_NDK=$HOME/android-sdk
     buck build demo_app_android
     [-] PROCESSING BUCK FILES...FINISHED 0.0s [100%]
     [-] DOWNLOADING... (0.00 B/S AVG, TOTAL: 0.00 B, 0 Artifacts)
     [-] BUILDING...FINISHED 0.7s [100%] (1/1 JOBS, 0 UPDATED, 0 [0.0%] CACHE MISS)
+
+{/literal}
 
 > The first time you build, you will most likely see a longer time and
 > cache misses. Subsequent builds should be much faster, with minimal
@@ -647,9 +656,11 @@ Buck outputs its results in the `buck-out/` directory.
 ### Run the built Android App
 
 Now that you know your app has built successfully, you can install and
-run the app with [`buck install`](/command/install.html). This command
-both compiles and installs the application on the Android emulator.
-Using the `--run` flag will launch the emulator as well.
+run the app with {call buck.cmd_install /}. This command both compiles
+and installs the application on the Android emulator. Using the `--run`
+flag will launch the emulator as well.
+
+{literal}
 
     buck install --run demo_app_android
     Installing apk on emulator-5554 (android-emulator).
@@ -660,6 +671,8 @@ Using the `--run` flag will launch the emulator as well.
     Successfully ran install apk //android:demo-app on 1 device(s)
     Starting activity com.facebook.buck.demo/.App...
     Successfully ran start activity on 1 device(s)
+
+{/literal}
 
 > If you get an error either that you do not have certain Android
 > add-ons (e.g., Google APIs) or that there is no emulator to run, you
@@ -685,8 +698,12 @@ library and application.
 
 ### Clone [Buck samples repo](https://github.com/fbsamples/bucksamples/)
 
+{literal}
+
     git clone https://github.com/fbsamples/bucksamples.git
     cd bucksamples/hello-buck-java/
+
+{/literal}
 
 ### Key Java Files
 
@@ -702,40 +719,45 @@ find:
 -   `com/facebook/buck/demo/HelloStringJava.java`: A simple Java library
     with one function that the main app calls.
 
--   `com/facebook/buck/demo/BUCK`: This [build
-    file](/concept/build_file.html) is what makes Buck work and is the
-    trigger for building the application. It defines all the [build
-    rule](/concept/build_rule.html)s for your source code. The key rules
-    you will see in this file is [`java_binary`](/rule/java_binary.html)
-    and [`java_library`](/rule/java_library.html). A [build
-    rule](/concept/build_rule.html) may also include dependencies
-    (generally via `deps`), which may be from other [build
-    file](/concept/build_file.html)s.
+-   `com/facebook/buck/demo/BUCK`: This {call buck.build_file /} is what
+    makes Buck work and is the trigger for building the application. It
+    defines all the {call buck.build_rule /}s for your source code. The
+    key rules you will see in this file is {call buck.java_binary /} and
+    {call buck.java_library /}. A {call buck.build_rule /} may also
+    include dependencies (generally via `deps`), which may be from other
+    {call buck.build_file /}s.
 
--   `.buckconfig`: A [`.buckconfig`](/files-and-dirs/buckconfig.html)
-    file allows for various flag and alias settings for any project
-    (even beyond this Java application, if they existed) within the
-    `hello-buck-java` directory.
+-   `.buckconfig`: A {call buck.buckconfig_link /} file allows for
+    various flag and alias settings for any project (even beyond this
+    Java application, if they existed) within the `hello-buck-java`
+    directory.
 
 ### Build the Java application
 
-In order to build the library, you use the
-[`buck build`](/command/build.html) command, specifying your app as the
-target. The target may be defined in the
-[`[alias]`](/files-and-dirs/buckconfig.html#alias) section in the
-`.buckconfig` file or it would be the name of your Java application
-prepended by `//[the directory where your project is located]:` (e.g.,
+In order to build the library, you use the {call buck.cmd_build /}
+command, specifying your app as the target. The target may be defined in
+the {call buckconfig.alias /} section in the `.buckconfig` file or it
+would be the name of your Java application prepended by
+`//[the directory where your project is located]:` (e.g.,
 `//com/facebook/buck/demo:hello-buck-java`).
+
+{literal}
 
     # From the root `hello-buck-java/` directory
     # hello_buck_java is an alias in .buckconfig for //com/facebook/buck/demo:hello-buck-java. Either works.
     buck build hello_buck_java
 
+{/literal}
+
 You should see output similar to:
+
+{literal}
 
     [-] PROCESSING BUCK FILES...FINISHED 0.0s [100%]
     [-] DOWNLOADING... (0.00 B/S AVG, TOTAL: 0.00 B, 0 Artifacts)
     [-] BUILDING...FINISHED 0.8s [100%] (1/1 JOBS, 0 UPDATED, 0 [0.0%] CACHE MISS)
+
+{/literal}
 
 > The first time you build, you will most likely see a longer time and
 > cache misses. Subsequent builds should be much faster, with minimal
@@ -746,14 +768,18 @@ Buck outputs its results in the `buck-out/` directory.
 ### Run the Built Java Application
 
 Now that you know your app has built successfully, you can install and
-run the app with [`buck run`](/command/run.html). This command both
-compiles and runs the application.
+run the app with {call buck.cmd_run /}. This command both compiles and
+runs the application.
+
+{literal}
 
     buck run hello_buck_java
     [-] PROCESSING BUCK FILES...FINISHED 0.0s [100%]
     [-] DOWNLOADING... (0.00 B/S AVG, TOTAL: 0.00 B, 0 Artifacts)
     [-] BUILDING...FINISHED 0.4s [100%] (1/1 JOBS, 0 UPDATED, 0 [0.0%] CACHE MISS)
     Hello Buck
+
+{/literal}
 
 ### Success!
 
@@ -762,202 +788,24 @@ If all goes well, you should see something similar to:
 `Hello Buck`
 :::
 
-### The Basics
+// close overview {literal}
 
--   [Getting Started](/setup/getting_started.html)
--   [Key Concepts](/about/overview.html)
--   [Tutorial](/learning/tutorial.html)
--   [Installing the IntelliJ
-    Plugin](/setup/intellij_plugin_install.html)
--   [Exopackage](/article/exopackage.html)
--   [Buck Cheat Sheet](/article/query_cheat_sheet.html)
+{/literal} {call buck.footer} {param navid: \'setup_getting_started\' /}
+{/call} {/template} /\*\*\*/ {template .active_developer_path}
 
-### About
+> If you do not have Xcode installed and you get the following error
+>
+>     {literal}
+>     error: active developer path ("/Applications/Xcode.app/Contents/Developer") does not exist
+>     {/literal}
+>
+> then run
+>
+>     {literal}
+>     xcode-select --reset 
+>     {/literal}
+>
+> to reset the command-line tools path to where the command line tools
+> are installed.
 
--   [What Makes Buck so Fast?](/concept/what_makes_buck_so_fast.html)
--   [Showcase](/about/showcase.html)
--   [Troubleshooting](/concept/troubleshooting.html)
--   [Performance Tuning](/about/performance_tuning.html)
--   [FAQ](/concept/faq.html)
--   [Learn More (Buck Presentations)](/presentations/index.html)
-
-### Concepts
-
--   [Build Rule](/concept/build_rule.html)
--   [Build File](/concept/build_file.html)
--   [Build Target](/concept/build_target.html)
--   [Build Target Pattern](/concept/build_target_pattern.html)
--   [Buck Daemon (buckd)](/concept/buckd.html)
--   [Visibility](/concept/visibility.html)
--   [Flavors](/concept/flavors.html)
--   [HTTP Cache API](/concept/http_cache_api.html)
--   [Rule Keys](/concept/rule_keys.html)
--   [Java ABIs](/concept/java_abis.html)
--   [Skylark](/concept/skylark.html)
-
-### Files and Directories
-
--   [.buckconfig](/files-and-dirs/buckconfig.html)
--   [.buckjavaargs](/files-and-dirs/buckjavaargs.html)
--   [buck-out](/files-and-dirs/buck-out.html)
-
-### Commands
-
--   [Common Parameters](/command/common_parameters.html)
--   [buck audit](/command/audit.html)
--   [buck build](/command/build.html)
--   [buck clean](/command/clean.html)
--   [buck doctor](/command/doctor.html)
--   [buck fetch](/command/fetch.html)
--   [buck fix](/command/fix.html)
--   [buck install](/command/install.html)
--   [buck kill](/command/kill.html)
--   [buck killall](/command/killall.html)
--   [buck project](/command/project.html)
--   [buck publish](/command/publish.html)
--   [buck query](/command/query.html)
--   [buck run](/command/run.html)
--   [buck root](/command/root.html)
--   [buck server](/command/server.html)
--   [buck targets](/command/targets.html)
--   [buck test](/command/test.html)
--   [buck uninstall](/command/uninstall.html)
--   [Exit Codes](/command/exit_codes.html)
-
-### Build Rules
-
--   **Core**
--   [command_alias()](/rule/command_alias.html)
--   [export_file()](/rule/export_file.html)
--   [filegroup()](/rule/filegroup.html)
--   [genrule()](/rule/genrule.html)
--   [http_archive()](/rule/http_archive.html)
--   [http_file()](/rule/http_file.html)
--   [remote_file()](/rule/remote_file.html)
--   [test_suite()](/rule/test_suite.html)
--   [worker_tool()](/rule/worker_tool.html)
--   [zip_file()](/rule/zip_file.html)
--   **Android**
--   [android_aar()](/rule/android_aar.html)
--   [android_binary()](/rule/android_binary.html)
--   [android_build_config()](/rule/android_build_config.html)
--   [android_instrumentation_apk()](/rule/android_instrumentation_apk.html)
--   [android_instrumentation_test()](/rule/android_instrumentation_test.html)
--   [android_library()](/rule/android_library.html)
--   [android_manifest()](/rule/android_manifest.html)
--   [android_prebuilt_aar()](/rule/android_prebuilt_aar.html)
--   [android_resource()](/rule/android_resource.html)
--   [apk_genrule()](/rule/apk_genrule.html)
--   [gen_aidl()](/rule/gen_aidl.html)
--   [keystore()](/rule/keystore.html)
--   [ndk_library()](/rule/ndk_library.html)
--   [prebuilt_jar()](/rule/prebuilt_jar.html)
--   [prebuilt_native_library()](/rule/prebuilt_native_library.html)
--   [robolectric_test()](/rule/robolectric_test.html)
--   **CXX**
--   [cxx_binary()](/rule/cxx_binary.html)
--   [cxx_library()](/rule/cxx_library.html)
--   [cxx_genrule()](/rule/cxx_genrule.html)
--   [cxx_precompiled_header()](/rule/cxx_precompiled_header.html)
--   [cxx_test()](/rule/cxx_test.html)
--   [prebuilt_cxx_library()](/rule/prebuilt_cxx_library.html)
--   [prebuilt_cxx_library_group()](/rule/prebuilt_cxx_library_group.html)
--   **D**
--   [d_binary()](/rule/d_binary.html)
--   [d_library()](/rule/d_library.html)
--   [d_test()](/rule/d_test.html)
--   **Go**
--   [go_binary()](/rule/go_binary.html)
--   [go_library()](/rule/go_library.html)
--   [go_test()](/rule/go_test.html)
--   [cgo_library()](/rule/cgo_library.html)
--   **Groovy**
--   [groovy_library()](/rule/groovy_library.html)
--   **Halide**
--   [halide_library()](/rule/halide_library.html)
--   **Haskell**
--   [haskell_binary()](/rule/haskell_binary.html)
--   [haskell_library()](/rule/haskell_library.html)
--   [prebuilt_haskell_library()](/rule/prebuilt_haskell_library.html)
--   **iOS**
--   [apple_asset_catalog()](/rule/apple_asset_catalog.html)
--   [apple_binary()](/rule/apple_binary.html)
--   [apple_bundle()](/rule/apple_bundle.html)
--   [apple_library()](/rule/apple_library.html)
--   [apple_package()](/rule/apple_package.html)
--   [apple_resource()](/rule/apple_resource.html)
--   [apple_test()](/rule/apple_test.html)
--   [core_data_model()](/rule/core_data_model.html)
--   [prebuilt_apple_framework()](/rule/prebuilt_apple_framework.html)
--   **Java**
--   [java_binary()](/rule/java_binary.html)
--   [java_library()](/rule/java_library.html)
--   [java_test()](/rule/java_test.html)
--   [prebuilt_jar()](/rule/prebuilt_jar.html)
--   [prebuilt_native_library()](/rule/prebuilt_native_library.html)
--   **Kotlin**
--   [kotlin_library()](/rule/kotlin_library.html)
--   [kotlin_test()](/rule/kotlin_test.html)
--   **Lua**
--   [cxx_lua_extension()](/rule/cxx_lua_extension.html)
--   [lua_binary()](/rule/lua_binary.html)
--   [lua_library()](/rule/lua_library.html)
--   **OCaml**
--   [ocaml_binary()](/rule/ocaml_binary.html)
--   [ocaml_library()](/rule/ocaml_library.html)
--   **Python**
--   [prebuilt_python_library()](/rule/prebuilt_python_library.html)
--   [python_binary()](/rule/python_binary.html)
--   [python_library()](/rule/python_library.html)
--   [python_test()](/rule/python_test.html)
--   **Rust**
--   [rust_binary()](/rule/rust_binary.html)
--   [rust_library()](/rule/rust_library.html)
--   [rust_test()](/rule/rust_test.html)
--   [prebuilt_rust_library()](/rule/prebuilt_rust_library.html)
--   **Shell**
--   [sh_binary()](/rule/sh_binary.html)
--   [sh_test()](/rule/sh_test.html)
--   **.NET**
--   [csharp_library()](/rule/csharp_library.html)
--   [prebuilt_dotnet_library()](/rule/prebuilt_dotnet_library.html)
-
-### Functions
-
--   **Python DSL**
--   [add_build_file_dep()](/function/add_build_file_dep.html)
--   [allow_unsafe_import()](/function/allow_unsafe_import.html)
--   [flatten_dicts()](/function/flatten_dicts.html)
--   [glob()](/function/glob.html)
--   [get_base_path()](/function/get_base_path.html)
--   [get_cell_name()](/function/get_cell_name.html)
--   [host_info()](/function/host_info.html)
--   [include_defs()](/function/include_defs.html)
--   [load()](/function/load.html)
--   [read_config()](/function/read_config.html)
--   [subdir_glob()](/function/subdir_glob.html)
--   [String Parameter Macros](/function/string_parameter_macros.html)
-
-```{=html}
-<!-- -->
-```
--   **Skylark**
--   [glob()](/skylark/generated/glob.html)
--   [host_info()](/skylark/generated/host_info.html)
--   [package_name()](/skylark/generated/package_name.html)
--   [provider()](/skylark/generated/provider.html)
--   [read_config()](/skylark/generated/read_config.html)
--   [repository_name()](/skylark/generated/repository_name.html)
--   [rule_exists()](/skylark/generated/rule_exists.html)
-
-### Extending Buck
-
--   [Custom Macros](/extending/macros.html)
--   [Custom Rules](/extending/rules.html)
--   [Building E2E Tests for Buck](/extending/e2e_tests.html)
-:::
-:::
-
-::: width
-© Copyright Facebook, 2013 - 2020
-:::
+{/template}

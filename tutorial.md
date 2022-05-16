@@ -1,28 +1,18 @@
-::: {#fb-root}
-:::
+/\* \* Copyright (c) Facebook, Inc. and its affiliates. \* \* Licensed
+under the Apache License, Version 2.0 (the \"License\"); \* you may not
+use this file except in compliance with the License. \* You may obtain a
+copy of the License at \* \* http://www.apache.org/licenses/LICENSE-2.0
+\* \* Unless required by applicable law or agreed to in writing,
+software \* distributed under the License is distributed on an \"AS IS\"
+BASIS, \* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+or implied. \* See the License for the specific language governing
+permissions and \* limitations under the License. \*/ {namespace
+buck.tutorial} /\*\*\*/ {template .soyweb} {call buck.page} {param
+title: \'Tutorials\' /} {param navid: \'learning_tutorial\' /} {param
+prettify: true /} {param description} A more in-depth tutorial on using
+Buck on a given platform. {/param} {param content}
 
-::: topbar
-[](http://buck.build/)
-
-# Buck
-
--   
--   [Docs](/setup/getting_started.html)
--   [Issues](https://github.com/facebook/buck/issues)
--   [GitHub](https://github.com/facebook/buck)
-:::
-
-::: socialBanner
-Support Ukraine. [Help Provide Humanitarian Aid to
-Ukraine](https://opensource.fb.com/support-ukraine).
-:::
-
-::: {.section .content}
-::: width
-# Tutorials
-
-::: overview
-::: overview
+::: {.{css .overview}}
 This expanded tutorial shows extended concepts about using Buck to build
 a project after you have installed Buck, including creating a project,
 building a project, packaging a project, etc.
@@ -32,27 +22,35 @@ building a project, packaging a project, etc.
 > in the near future.**
 
 ::: toggler
-  --------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **Platform:**         [Android](javascript:void(0);){.button-android onclick="display('platform', 'android')"}[MacOS](javascript:void(0);){.button-macos onclick="display('platform', 'macos')"}[Linux](javascript:void(0);){.button-linuxos onclick="display('platform', 'linuxos')"}
-  **Development OS:**   [macOS](javascript:void(0);){.button-mac onclick="display('os', 'mac')"}[Linux](javascript:void(0);){.button-linux onclick="display('os', 'linux')"}
-  **Language:**         [Java](javascript:void(0);){.button-java onclick="display('language', 'java')"}[Kotlin](javascript:void(0);){.button-kotlin onclick="display('language', 'kotlin')"}[Rust](javascript:void(0);){.button-rust onclick="display('language', 'rust')"}
-  --------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  --------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  **Platform:**         [Android](javascript:void(0);){.button-android onclick="display('platform', 'android')"} [MacOS](javascript:void(0);){.button-macos onclick="display('platform', 'macos')"} [Linux](javascript:void(0);){.button-linuxos onclick="display('platform', 'linuxos')"}
+  **Development OS:**   [macOS](javascript:void(0);){.button-mac onclick="display('os', 'mac')"} [Linux](javascript:void(0);){.button-linux onclick="display('os', 'linux')"}
+  **Language:**         [Java](javascript:void(0);){.button-java onclick="display('language', 'java')"} [Kotlin](javascript:void(0);){.button-kotlin onclick="display('language', 'kotlin')"} [Rust](javascript:void(0);){.button-rust onclick="display('language', 'rust')"}
+  --------------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 :::
 
 ## Path Setup
 
-Add Buck to your `$PATH` and set up [`buckd`](/concept/buckd.html):
+Add Buck to your `$PATH` and set up {call buck.buckd /}:
+
+{literal}
 
     sudo ln -s ${PWD}/bin/buck /usr/bin/buck
     sudo ln -s ${PWD}/bin/buckd /usr/bin/buckd
+
+{/literal}
 
 ## Create Project
 
 We are going to build a sample application. We should start our project
 in an empty directory, so create a new one and navigate to it:
 
+{literal}
+
     mkdir -p ~/my-first-buck-project/
     cd ~/my-first-buck-project/
+
+{/literal}
 
 > **Note: the following instructions will now assume that all commands
 > are run from your `~/my-first-buck-project` directory.**
@@ -66,11 +64,17 @@ Assuming that your Android SDK is installed in `~/android-sdk`, run the
 following command to set a `ANDROID_SDK` environment variable that tells
 Buck where to find your Android SDK:
 
+{literal}
+
     export ANDROID_SDK=$HOME/android-sdk
+
+{/literal}
 
 Now that Buck can locate your Android SDK, it is time to compile some
 Java code. First, we create a simple `Activity` at
 `java/com/example/activity/MyFirstActivity.java`:
+
+{literal}
 
     mkdir -p java/com/example/activity/
     echo "package com.example.activity;
@@ -86,9 +90,13 @@ Java code. First, we create a simple `Activity` at
       }
     }" > java/com/example/activity/MyFirstActivity.java
 
+{/literal}
+
 Now we need a build file that defines a build rule to compile this Java
 code, so we create an `android_library()` rule in
 `java/com/example/activity/BUCK`:
+
+{literal}
 
     echo "android_library(
       name = 'activity',
@@ -96,9 +104,11 @@ code, so we create an `android_library()` rule in
       visibility = [ 'PUBLIC' ],
     )" > java/com/example/activity/BUCK
 
+{/literal}
+
 Now we can compile our Java code using Buck:
 
-    buck build //java/com/example/activity:activity
+    buck build{sp}//java/com/example/activity:activity
 
 > Buck generates its output in the `buck-out` directory, so this is a
 > good time to specify `buck-out` as something that should be ignored by
@@ -107,6 +117,8 @@ Now we can compile our Java code using Buck:
 Now that Buck can locate your Android SDK, it is time to compile some
 kotlin code. First, we create a simple `Activity` at
 `kotlin/com/example/activity/MyFirstActivity.kt`:
+
+{literal}
 
     mkdir -p kotlin/com/example/activity/
     echo "package com.example.activity
@@ -121,9 +133,13 @@ kotlin code. First, we create a simple `Activity` at
         }
     }" > kotlin/com/example/activity/MyFirstActivity.kt
 
+{/literal}
+
 Now we need a build file that defines a build rule to compile this
 kotlin code, so we create an `android_library()` rule in
 `kotlin/com/example/activity/BUCK`:
+
+{literal}
 
     echo "android_library(
       name = 'activity',
@@ -132,15 +148,19 @@ kotlin code, so we create an `android_library()` rule in
       visibility = [ 'PUBLIC' ],
     )" > kotlin/com/example/activity/BUCK
 
+{/literal}
+
 Now we can compile our Java code using Buck:
 
-    buck build //kotlin/com/example/activity:activity
+    buck build{sp}//kotlin/com/example/activity:activity
 
 > Buck generates its output in the `buck-out` directory, so this is a
 > good time to specify `buck-out` as something that should be ignored by
 > your version control system.
 
 First, we create rust source files and directories:
+
+{literal}
 
     mkdir -p src/front_of_house
     echo "mod front_of_house;
@@ -179,8 +199,10 @@ First, we create rust source files and directories:
         println!(\"Payment done.\");
     }" > src/front_of_house/serving.rs
 
+{/literal}
+
 Now we need a build file that defines a build rule to compile this rust
-code, so we create an `rust_binary()` rule in `BUCK`:
+code, so we create an `rust_binary()` rule in `BUCK`: {literal}
 
     echo "rust_binary(
         name = 'restaurant',
@@ -189,13 +211,15 @@ code, so we create an `rust_binary()` rule in `BUCK`:
         ),
     )" >BUCK
 
+{/literal}
+
 Now we can build our rust code using Buck:
 
-    buck build :restaurant
+    buck build{sp}:restaurant
 
 And run the sample:
 
-    buck run :restaurant
+    buck run{sp}:restaurant
 
 > Buck generates its output in the `buck-out` directory, so this is a
 > good time to specify `buck-out` as something that should be ignored by
@@ -207,15 +231,21 @@ Android applications frequently contain resources, such as strings and
 images. For this example, we will create a trivial Android resource
 bundle that contains a single string:
 
+{literal}
+
     mkdir -p res/com/example/activity/res/values/
     echo "<?xml version='1.0' encoding='utf-8' ?>
     <resources>
       <string name='app_name'>Hello World</string>
     </resources>" > res/com/example/activity/res/values/strings.xml
 
+{/literal}
+
 Buck needs a way to reference this collection of resources, so we need
-to create a build file that defines an
-[`android_resource`](/rule/android_resource.html) rule:
+to create a build file that defines an {call buck.android_resource /}
+rule:
+
+{literal}
 
     echo "android_resource(
       name = 'res',
@@ -225,6 +255,8 @@ to create a build file that defines an
         '//apps/myapp:',
       ],
     )" > res/com/example/activity/BUCK
+
+{/literal}
 
 ## Create a Keystore
 
@@ -241,8 +273,12 @@ debugging.
 > Unfortunately, this is not a one-liner because there is a number of
 > prompts from the `keytool` command.
 
+{literal}
+
     keytool -genkey -keystore apps/myapp/debug.keystore -alias my_alias \
         -keyalg RSA -keysize 2048 -validity 10000
+
+{/literal}
 
 When prompted for a keystore password, just use `android` (and then type
 it again to confirm it), and hit `Enter` to accept the default values
@@ -250,14 +286,20 @@ for name, organizational unit, etc.
 
 Then create a `.properties` file that stores all of this information:
 
+{literal}
+
     echo "key.alias=my_alias
     key.store.password=android
     key.alias.password=android" > apps/myapp/debug.keystore.properties
+
+{/literal}
 
 ## Build an APK
 
 An Android application needs a manifest named `AndroidManifest.xml`, so
 we must create such a file:
+
+{literal}
 
     echo "<?xml version='1.0' encoding='utf-8'?>
     <manifest xmlns:android='http://schemas.android.com/apk/res/android'
@@ -277,8 +319,12 @@ we must create such a file:
 
     </manifest>" > apps/myapp/AndroidManifest.xml
 
-Now we define an [`android_binary`](/rule/android_binary.html) and
-[`keystore`](/rule/keystore.html) rule in our build file:
+{/literal}
+
+Now we define an {call buck.android_binary /} and {call buck.keystore /}
+rule in our build file:
+
+{literal}
 
     echo "android_binary(
       name = 'app',
@@ -302,30 +348,34 @@ Now we define an [`android_binary`](/rule/android_binary.html) and
       properties = 'debug.keystore.properties',
     )" > apps/myapp/BUCK
 
-Building an [`android_binary`](/rule/android_binary.html) rule will
-produce an APK:
+{/literal}
 
-    buck build //apps/myapp:app
+Building an {call buck.android_binary /} rule will produce an APK:
+
+    buck build{sp}//apps/myapp:app
 
 Alternatively, if you have an Android device connected to your computer,
-you can build and install the APK in one step with
-[`buck install`](/command/install.html):
+you can build and install the APK in one step with {call
+buck.cmd_install /}:
 
-    buck install //apps/myapp:app
+    buck install{sp}//apps/myapp:app
 
 ## Create an Alias
 
-Typing `buck build //apps/myapp:app` every time you want to rebuild your
-APK can be tedious. Fortunately, Buck makes it possible to define an
-*alias* for a build target. An alias can always be used in place of a
+Typing `buck build{sp}//apps/myapp:app` every time you want to rebuild
+your APK can be tedious. Fortunately, Buck makes it possible to define
+an *alias* for a build target. An alias can always be used in place of a
 build target when using Buck\'s command-line interface.
 
-Aliases must be defined in the
-[`[alias]`](/files-and-dirs/buckconfig.html#alias) a config file in the
-root of the project:
+Aliases must be defined in the {call buckconfig.alias /} a config file
+in the root of the project:
+
+{literal}
 
     echo "[alias]
         app = //apps/myapp:app" > .buckconfig
+
+{/literal}
 
 With this alias in place, the command to build and install the APK is
 much shorter and easier to remember:
@@ -339,22 +389,27 @@ Buck can generate an IntelliJ project from the build rules you defined
 in your build files.
 
 In order to ensure that IntelliJ recognizes where your Java folders are,
-you need to specify the
-[`[java].src_roots`](/files-and-dirs/buckconfig.html#java.src_roots) in
-your [`.buckconfig`](/files-and-dirs/buckconfig.html) file:
+you need to specify the {call buckconfig.java_src_roots /} in your {call
+buck.buckconfig_link /} file:
+
+{literal}
 
     echo "[java]
         src_roots = /java/" >> .buckconfig
 
-Now you can create the IntelliJ project by running
-[`buck project`](/command/project.html):
+{/literal}
+
+Now you can create the IntelliJ project by running {call
+buck.cmd_project /}:
 
     buck project --ide intellij
 
 Note that you will likely want to exclude these generated files from
 version control, so add the following to your `.gitignore` file (or
 `.hgignore` if you are using Mercurial) along with the files generated
-by [`buckd`](/concept/buckd.html):
+by {call buck.buckd /}:
+
+{literal}
 
     echo "/.buckd
     /buck-out
@@ -364,207 +419,12 @@ by [`buckd`](/concept/buckd.html):
     /.idea/modules.xml
     /.idea/runConfigurations/Debug_Buck_test.xml" > .gitignore
 
+{/literal}
+
 Now you can build your Android application from either IntelliJ or the
 command line.
 :::
-:::
 
-### The Basics
+// close overview {/param} {/call} {literal}
 
--   [Getting Started](/setup/getting_started.html)
--   [Key Concepts](/about/overview.html)
--   [Tutorial](/learning/tutorial.html)
--   [Installing the IntelliJ
-    Plugin](/setup/intellij_plugin_install.html)
--   [Exopackage](/article/exopackage.html)
--   [Buck Cheat Sheet](/article/query_cheat_sheet.html)
-
-### About
-
--   [What Makes Buck so Fast?](/concept/what_makes_buck_so_fast.html)
--   [Showcase](/about/showcase.html)
--   [Troubleshooting](/concept/troubleshooting.html)
--   [Performance Tuning](/about/performance_tuning.html)
--   [FAQ](/concept/faq.html)
--   [Learn More (Buck Presentations)](/presentations/index.html)
-
-### Concepts
-
--   [Build Rule](/concept/build_rule.html)
--   [Build File](/concept/build_file.html)
--   [Build Target](/concept/build_target.html)
--   [Build Target Pattern](/concept/build_target_pattern.html)
--   [Buck Daemon (buckd)](/concept/buckd.html)
--   [Visibility](/concept/visibility.html)
--   [Flavors](/concept/flavors.html)
--   [HTTP Cache API](/concept/http_cache_api.html)
--   [Rule Keys](/concept/rule_keys.html)
--   [Java ABIs](/concept/java_abis.html)
--   [Skylark](/concept/skylark.html)
-
-### Files and Directories
-
--   [.buckconfig](/files-and-dirs/buckconfig.html)
--   [.buckjavaargs](/files-and-dirs/buckjavaargs.html)
--   [buck-out](/files-and-dirs/buck-out.html)
-
-### Commands
-
--   [Common Parameters](/command/common_parameters.html)
--   [buck audit](/command/audit.html)
--   [buck build](/command/build.html)
--   [buck clean](/command/clean.html)
--   [buck doctor](/command/doctor.html)
--   [buck fetch](/command/fetch.html)
--   [buck fix](/command/fix.html)
--   [buck install](/command/install.html)
--   [buck kill](/command/kill.html)
--   [buck killall](/command/killall.html)
--   [buck project](/command/project.html)
--   [buck publish](/command/publish.html)
--   [buck query](/command/query.html)
--   [buck run](/command/run.html)
--   [buck root](/command/root.html)
--   [buck server](/command/server.html)
--   [buck targets](/command/targets.html)
--   [buck test](/command/test.html)
--   [buck uninstall](/command/uninstall.html)
--   [Exit Codes](/command/exit_codes.html)
-
-### Build Rules
-
--   **Core**
--   [command_alias()](/rule/command_alias.html)
--   [export_file()](/rule/export_file.html)
--   [filegroup()](/rule/filegroup.html)
--   [genrule()](/rule/genrule.html)
--   [http_archive()](/rule/http_archive.html)
--   [http_file()](/rule/http_file.html)
--   [remote_file()](/rule/remote_file.html)
--   [test_suite()](/rule/test_suite.html)
--   [worker_tool()](/rule/worker_tool.html)
--   [zip_file()](/rule/zip_file.html)
--   **Android**
--   [android_aar()](/rule/android_aar.html)
--   [android_binary()](/rule/android_binary.html)
--   [android_build_config()](/rule/android_build_config.html)
--   [android_instrumentation_apk()](/rule/android_instrumentation_apk.html)
--   [android_instrumentation_test()](/rule/android_instrumentation_test.html)
--   [android_library()](/rule/android_library.html)
--   [android_manifest()](/rule/android_manifest.html)
--   [android_prebuilt_aar()](/rule/android_prebuilt_aar.html)
--   [android_resource()](/rule/android_resource.html)
--   [apk_genrule()](/rule/apk_genrule.html)
--   [gen_aidl()](/rule/gen_aidl.html)
--   [keystore()](/rule/keystore.html)
--   [ndk_library()](/rule/ndk_library.html)
--   [prebuilt_jar()](/rule/prebuilt_jar.html)
--   [prebuilt_native_library()](/rule/prebuilt_native_library.html)
--   [robolectric_test()](/rule/robolectric_test.html)
--   **CXX**
--   [cxx_binary()](/rule/cxx_binary.html)
--   [cxx_library()](/rule/cxx_library.html)
--   [cxx_genrule()](/rule/cxx_genrule.html)
--   [cxx_precompiled_header()](/rule/cxx_precompiled_header.html)
--   [cxx_test()](/rule/cxx_test.html)
--   [prebuilt_cxx_library()](/rule/prebuilt_cxx_library.html)
--   [prebuilt_cxx_library_group()](/rule/prebuilt_cxx_library_group.html)
--   **D**
--   [d_binary()](/rule/d_binary.html)
--   [d_library()](/rule/d_library.html)
--   [d_test()](/rule/d_test.html)
--   **Go**
--   [go_binary()](/rule/go_binary.html)
--   [go_library()](/rule/go_library.html)
--   [go_test()](/rule/go_test.html)
--   [cgo_library()](/rule/cgo_library.html)
--   **Groovy**
--   [groovy_library()](/rule/groovy_library.html)
--   **Halide**
--   [halide_library()](/rule/halide_library.html)
--   **Haskell**
--   [haskell_binary()](/rule/haskell_binary.html)
--   [haskell_library()](/rule/haskell_library.html)
--   [prebuilt_haskell_library()](/rule/prebuilt_haskell_library.html)
--   **iOS**
--   [apple_asset_catalog()](/rule/apple_asset_catalog.html)
--   [apple_binary()](/rule/apple_binary.html)
--   [apple_bundle()](/rule/apple_bundle.html)
--   [apple_library()](/rule/apple_library.html)
--   [apple_package()](/rule/apple_package.html)
--   [apple_resource()](/rule/apple_resource.html)
--   [apple_test()](/rule/apple_test.html)
--   [core_data_model()](/rule/core_data_model.html)
--   [prebuilt_apple_framework()](/rule/prebuilt_apple_framework.html)
--   **Java**
--   [java_binary()](/rule/java_binary.html)
--   [java_library()](/rule/java_library.html)
--   [java_test()](/rule/java_test.html)
--   [prebuilt_jar()](/rule/prebuilt_jar.html)
--   [prebuilt_native_library()](/rule/prebuilt_native_library.html)
--   **Kotlin**
--   [kotlin_library()](/rule/kotlin_library.html)
--   [kotlin_test()](/rule/kotlin_test.html)
--   **Lua**
--   [cxx_lua_extension()](/rule/cxx_lua_extension.html)
--   [lua_binary()](/rule/lua_binary.html)
--   [lua_library()](/rule/lua_library.html)
--   **OCaml**
--   [ocaml_binary()](/rule/ocaml_binary.html)
--   [ocaml_library()](/rule/ocaml_library.html)
--   **Python**
--   [prebuilt_python_library()](/rule/prebuilt_python_library.html)
--   [python_binary()](/rule/python_binary.html)
--   [python_library()](/rule/python_library.html)
--   [python_test()](/rule/python_test.html)
--   **Rust**
--   [rust_binary()](/rule/rust_binary.html)
--   [rust_library()](/rule/rust_library.html)
--   [rust_test()](/rule/rust_test.html)
--   [prebuilt_rust_library()](/rule/prebuilt_rust_library.html)
--   **Shell**
--   [sh_binary()](/rule/sh_binary.html)
--   [sh_test()](/rule/sh_test.html)
--   **.NET**
--   [csharp_library()](/rule/csharp_library.html)
--   [prebuilt_dotnet_library()](/rule/prebuilt_dotnet_library.html)
-
-### Functions
-
--   **Python DSL**
--   [add_build_file_dep()](/function/add_build_file_dep.html)
--   [allow_unsafe_import()](/function/allow_unsafe_import.html)
--   [flatten_dicts()](/function/flatten_dicts.html)
--   [glob()](/function/glob.html)
--   [get_base_path()](/function/get_base_path.html)
--   [get_cell_name()](/function/get_cell_name.html)
--   [host_info()](/function/host_info.html)
--   [include_defs()](/function/include_defs.html)
--   [load()](/function/load.html)
--   [read_config()](/function/read_config.html)
--   [subdir_glob()](/function/subdir_glob.html)
--   [String Parameter Macros](/function/string_parameter_macros.html)
-
-```{=html}
-<!-- -->
-```
--   **Skylark**
--   [glob()](/skylark/generated/glob.html)
--   [host_info()](/skylark/generated/host_info.html)
--   [package_name()](/skylark/generated/package_name.html)
--   [provider()](/skylark/generated/provider.html)
--   [read_config()](/skylark/generated/read_config.html)
--   [repository_name()](/skylark/generated/repository_name.html)
--   [rule_exists()](/skylark/generated/rule_exists.html)
-
-### Extending Buck
-
--   [Custom Macros](/extending/macros.html)
--   [Custom Rules](/extending/rules.html)
--   [Building E2E Tests for Buck](/extending/e2e_tests.html)
-:::
-:::
-
-::: width
-© Copyright Facebook, 2013 - 2020
-:::
+{/literal} {/template}

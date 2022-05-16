@@ -7,11 +7,12 @@ software \* distributed under the License is distributed on an \"AS IS\"
 BASIS, \* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 or implied. \* See the License for the specific language governing
 permissions and \* limitations under the License. \*/ {namespace
-buck.get_cell_name} /\*\*\*/ {template .soyweb} {call buck.page} {param
-title: \'get_cell_name()\' /} {param navid: \'function_get_cell_name\'
-/} {param prettify: true /} {param description} The get_cell_name()
-function is used to get the canonical cell name of the build file.
-{/param} {param content} {call buck.function} {param status: \'FROZEN\'
-/} {param overview} The `get_cell_name()` function is used the canonical
-cell name of the build file from within a build file. {/param} {/call}
-// buck.function {/param} // content {/call} {/template}
+buck.skylark.dummy} /\*\*\*/ {template .soyweb} {call buck.page} {param
+title: \'dummy()\' /} {param navid: \'skylark/generated_dummy\' /}
+{param prettify: true /} {param description} Returns a dummy list of
+strings. {/param} {param content} {call buck.function} {param status:
+\'UNFROZEN\' /} {param overview} Returns a dummy list of strings.
+{/param} {param args} {call buck.functionArg} {param name : \'kwargs\'
+/} {param desc } the dummy attributes. {/param} {param default :
+\'None\' /} {/call} {/param} {/call} {/param} // content {/call}
+{/template}

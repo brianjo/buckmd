@@ -1,31 +1,26 @@
-::: {#fb-root}
-:::
+/\* \* Copyright (c) Facebook, Inc. and its affiliates. \* \* Licensed
+under the Apache License, Version 2.0 (the \"License\"); \* you may not
+use this file except in compliance with the License. \* You may obtain a
+copy of the License at \* \* http://www.apache.org/licenses/LICENSE-2.0
+\* \* Unless required by applicable law or agreed to in writing,
+software \* distributed under the License is distributed on an \"AS IS\"
+BASIS, \* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+or implied. \* See the License for the specific language governing
+permissions and \* limitations under the License. \*/ {namespace
+buck.exopackage} /\*\*\*/ {template .soyweb} {call buck.page} {param
+title: \'Exopackage\' /} {param navid: \'article_exopackage\' /} {param
+subtitle: \'A technique for fast, iterative Android development.\' /}
+{param prettify: true /} {param description} Buck has an advanced
+feature to speed up iterative Android development called exopackage. An
+exopackage is a small shell of an Android app that contains the minimal
+code and resources needed to bootstrap loading the code for a
+full-fledged Android application. {/param} {param content} {let
+\$step2sha1: \'6c809273e70428f2f465cdeef568e1f35c30b439\' /} {let
+\$step3sha1: \'5f7ce4934e9e8ea9a391a09d2093c79b64b7d207\' /} {let
+\$step4sha1: \'d4553a92eb8969e05d7cd9c2e73b4309fee72966\' /} {let
+\$step5sha1: \'1f1b375624664ac1cdc82668a4b952c6f332bdb0\' /} {let
+\$step6sha1: \'4250292b4d4742d40a9b06ce638741b2873210f1\' /}
 
-::: topbar
-[](http://buck.build/)
-
-# Buck
-
--   
--   [Docs](/setup/getting_started.html)
--   [Issues](https://github.com/facebook/buck/issues)
--   [GitHub](https://github.com/facebook/buck)
-:::
-
-::: socialBanner
-Support Ukraine. [Help Provide Humanitarian Aid to
-Ukraine](https://opensource.fb.com/support-ukraine).
-:::
-
-::: {.section .content}
-::: width
-# Exopackage:
-
-::: subtitle
-A technique for fast, iterative Android development.
-:::
-
-::: overview
 Buck has an advanced feature to speed up iterative Android development
 called exopackage. An *exopackage* is a small shell of an Android app
 that contains the minimal code and resources needed to bootstrap loading
@@ -33,7 +28,7 @@ the code for a full-fledged Android application. Loading the application
 code at runtime avoids a full reinstall of the app when testing a Java
 change, which dramatically reduces the length of edit/refresh cycles.
 Here are the performance improvements in build times for Buck vs. Gradle
-in a real world Android application,
+in a real world Android application,{sp}
 [AntennaPod](https://github.com/danieloeh/AntennaPod):
 
   --------------------- -------- ------ ----------
@@ -62,7 +57,7 @@ explanation** of how exopackage works.
 For this tutorial, we will demonstrate how to use exopackage by adding
 Buck support to [AntennaPod](https://github.com/danieloeh/AntennaPod),
 an open source podcast management app for Android. Each step in the
-process is documented as a separate commit in [our fork of
+process is documented as a separate commit in{sp} [our fork of
 AntennaPod](https://github.com/facebookarchive/AntennaPod). Note that
 most of the work in this tutorial is in adding Buck support to
 AntennaPod. If your Android project already uses Buck, then you can jump
@@ -91,9 +86,11 @@ If you want to walk through this tutorial and make all of the changes
 yourself, then the first step is to clone the AntennaPod application at
 the same revision used to create this tutorial:
 
+    {literal}
     git clone --recursive git@github.com:facebookarchive/AntennaPod.git
     cd AntennaPod
     git checkout c2080b1dfd17fc371e04ce1e7b39ebadaf3cb7a7
+    {/literal}
 
 If you just want to play with the final version of the tutorial after
 all of the Buck/exopackage support has been added, then checkout to the
@@ -101,14 +98,15 @@ appropriate revision so you can build and run AntennaPod using Buck.
 Note that you must add your own keystore before you can do a build. (We
 do not check in `debug.keystore` for security reasons.)
 
-    git checkout 4250292b4d4742d40a9b06ce638741b2873210f1
+    {literal}
+    git checkout {/literal}{$step6sha1}{literal}
     cp ~/.android/debug.keystore keystore/debug.keystore
     buck install --run antennapod
+    {/literal}
 
 ## Step 2: Import JARs for third party dependencies {#import-dependencies}
 
-[View on GitHub:
-[6c809273e70428f2f465cdeef568e1f35c30b439](https://github.com/facebookarchive/AntennaPod/commit/6c809273e70428f2f465cdeef568e1f35c30b439)]{style="font-size: 80%"}
+{call .gitHubCommit} {param sha1 : \$step2sha1 /} {/call}
 
 Unlike Gradle, Buck requires that all files that contribute to the
 project live under the project root (which is defined by the presence of
@@ -122,27 +120,29 @@ For AntennaPod, we ran `./gradlew --debug assembleDebug` and inspected
 the output to figure out which third party JAR files Gradle was using to
 build the app. As a result, we ended up adding the following files to
 the `libs` directory, which also includes an
-[AAR](https://developer.android.com/studio/projects/android-library#aar-contents)
+[AAR](https://developer.android.com/studio/projects/android-library#aar-contents){sp}
 file for the Android support library for v7 compatibility.
 
+    {literal}
     libs/appcompat-v7-19.1.0.aar
     libs/commons-io-2.4.jar
     libs/commons-lang3-3.3.2.jar
     libs/flattr4j-core-2.10.jar
     libs/library-2.4.0.jar
     libs/support-v4-19.1.0.jar
+    {/literal}
 
 Note that we also removed the `libs` directory from `.gitignore` as part
 of this change.
 
 ## Step 3: Ensure R.\* constants are not assumed to be final {#refactor-r-constants}
 
-[View on GitHub:
-[5f7ce4934e9e8ea9a391a09d2093c79b64b7d207](https://github.com/facebookarchive/AntennaPod/commit/5f7ce4934e9e8ea9a391a09d2093c79b64b7d207)]{style="font-size: 80%"}
+{call .gitHubCommit} {param sha1 : \$step3sha1 /} {/call}
 
 If you have any code like the following:
 
 ``` {.prettyprint .lang-java}
+{literal}
   int id = view.getId();
   switch (id) {
     case R.id.button1:
@@ -155,11 +155,13 @@ If you have any code like the following:
       action3();
       break;
   }
+{/literal}
 ```
 
 You must convert it to use `if`/`else` blocks as follows:
 
 ``` {.prettyprint .lang-java}
+{literal}
   int id = view.getId();
   if (id == R.id.button1) {
     action1();
@@ -168,33 +170,33 @@ You must convert it to use `if`/`else` blocks as follows:
   } else if (id == R.id.button3) {
     action3();
   }
+{/literal}
 ```
 
 As explained in the article [Non-constant Fields in Case
 Labels](http://tools.android.com/tips/non-constant-fields), the
 constants in the `R` class for an Android library projects are not
 `final`, which means they cannot be used as constant expressions in
-`case` statements. Because Buck treats the code for an
-[`android_library`](/rule/android_library.html) as if it were part of an
-Android library project, this applies to all Android code built by Buck.
-The article explains how you can leverage your IDE to automate this
-refactoring.
+`case` statements. Because Buck treats the code for an {call
+buck.android_library /} as if it were part of an Android library
+project, this applies to all Android code built by Buck. The article
+explains how you can leverage your IDE to automate this refactoring.
 
 ## Step 4: Create BUCK files that define build rules to build AntennaPod with Buck {#build-rules}
 
-[View on GitHub:
-[d4553a92eb8969e05d7cd9c2e73b4309fee72966](https://github.com/facebookarchive/AntennaPod/commit/d4553a92eb8969e05d7cd9c2e73b4309fee72966)]{style="font-size: 80%"}
+{call .gitHubCommit} {param sha1 : \$step4sha1 /} {/call}
 
 In Buck, build rules are defined in build files named `BUCK`. In this
 step, we create a `BUCK` file and add the build rules necessary to build
 the AntennaPod APK using Buck without touching any other files in the
 AntennaPod repository.
 
-We start by creating a `BUCK` file and defining an
-[`android_library`](/rule/android_library.html) rule that exposes all of
-the JARs in the `libs` directory as a single dependency, `:all-jars`:
+We start by creating a `BUCK` file and defining an {call
+buck.android_library /} rule that exposes all of the JARs in the `libs`
+directory as a single dependency, `:all-jars`:
 
 ``` {.prettyprint .lang-py}
+{literal}
   import re
 
   jar_deps = []
@@ -210,23 +212,26 @@ the JARs in the `libs` directory as a single dependency, `:all-jars`:
     name = 'all-jars',
     exported_deps = jar_deps,
   )
+{/literal}
 ```
 
-We also wrap the AAR file for the Android support library with an
-[`android_prebuilt_aar`](/rule/android_prebuilt_aar.html) rule:
+We also wrap the AAR file for the Android support library with an {call
+buck.android_prebuilt_aar /} rule:
 
 ``` {.prettyprint .lang-py}
+{literal}
   android_prebuilt_aar(
     name = 'appcompat',
     aar = 'libs/appcompat-v7-19.1.0.aar',
   )
+{/literal}
 ```
 
 Next, we define some rules to generate `.java` files from `.aidl` files
-and package them as an [`android_library`](/rule/android_library.html),
-as well:
+and package them as an {call buck.android_library /}, as well:
 
 ``` {.prettyprint .lang-py}
+{literal}
   presto_gen_aidls = []
   for aidlfile in glob(['src/com/aocate/presto/service/*.aidl']):
     name = 'presto_aidls__' + re.sub(r'^.*/([^/]+)\.aidl$', r'\1', aidlfile)
@@ -241,27 +246,29 @@ as well:
     name = 'presto-aidls',
     srcs = presto_gen_aidls,
   )
+{/literal}
 ```
 
-Then we define an
-[`android_build_config`](/rule/android_build_config.html), which will
-generate `de.danoeh.antennapod.BuildConfig` for us, compile it, and
-expose it as a [`java_library`](/rule/java_library.html). As we will
-see, this class plays an important role in creating an exopackage:
+Then we define an {call buck.android_build_config /}, which will
+generate {sp}`de.danoeh.antennapod.BuildConfig` for us, compile it, and
+expose it as a {call buck.java_library /}. As we will see, this class
+plays an important role in creating an exopackage:
 
 ``` {.prettyprint .lang-py}
+{literal}
   android_build_config(
     name = 'build-config',
     package = 'de.danoeh.antennapod',
   )
+{/literal}
 ```
 
-Before we can define an [`android_library`](/rule/android_library.html)
-rule to compile the primary sources for AntennaPod, we must define some
-rules to bundle the resources and code for its dependent Android library
-projects:
+Before we can define an {call buck.android_library /} rule to compile
+the primary sources for AntennaPod, we must define some rules to bundle
+the resources and code for its dependent Android library projects:
 
 ``` {.prettyprint .lang-py}
+{literal}
   android_resource(
     name = 'dslv-res',
     package = 'com.mobeta.android.dslv',
@@ -285,15 +292,15 @@ projects:
       ':presto-aidls',
     ],
   )
+{/literal}
 ```
 
 Now that the dependent Android library projects can be expressed as
-dependencies in Buck, we define
-[`android_resource`](/rule/android_resource.html) and
-[`android_library`](/rule/android_library.html) rules that build the
-main AntennaPod code:
+dependencies in Buck, we define {call buck.android_resource /} and {call
+buck.android_library /} rules that build the main AntennaPod code:
 
 ``` {.prettyprint .lang-py}
+{literal}
   android_resource(
     name = 'res',
     package = 'de.danoeh.antennapod',
@@ -317,6 +324,7 @@ main AntennaPod code:
       ':res',
     ],
   )
+{/literal}
 ```
 
 To package the Android code into an APK, we need a keystore with which
@@ -325,11 +333,13 @@ package everything toegether. Let\'s start with the keystore, as
 defining this rule requires an extra step from the command line:
 
 ``` {.prettyprint .lang-py}
+{literal}
 keystore(
   name = 'debug_keystore',
   store = 'keystore/debug.keystore',
   properties = 'keystore/debug.keystore.properties',
 )
+{/literal}
 ```
 
 Note that a clean checkout of the AntennaPod repository includes a
@@ -345,13 +355,14 @@ it**:
 
     cp ~/.android/debug.keystore keystore/debug.keystore
 
-With the [`keystore`](/rule/keystore.html) defined, now we can define
-the [`android_binary`](/rule/android_binary.html) rule whose output will
-be the AntennaPod APK. Note that the only item listed in its `deps` is
-`:main-lib`, as [`android_binary`](/rule/android_binary.html) will
-package `:main-lib` and its transitive dependencies into the APK.
+With the {call buck.keystore /} defined, now we can define the {call
+buck.android_binary /} rule whose output will be the AntennaPod APK.
+Note that the only item listed in its `deps` is {sp}`:main-lib`, as
+{call buck.android_binary /} will package {sp}`:main-lib` and its
+transitive dependencies into the APK.
 
 ``` {.prettyprint .lang-py}
+{literal}
 android_binary(
   name = 'antennapod',
   manifest = 'AndroidManifest.xml',
@@ -360,12 +371,14 @@ android_binary(
     ':main-lib',
   ],
 )
+{/literal}
 ```
 
 To facilitate building from the command line (and to leverage the build
 cache), create a file named `.buckconfig` in the root of the repo with
 the following contents:
 
+    {literal}
     [alias]
       antennapod = //:antennapod
     [cache]
@@ -373,81 +386,86 @@ the following contents:
       dir_max_size = 1GB
     [android]
       target = Google Inc.:Google APIs:19
+    {/literal}
 
-Now you should be able to run `buck build` antennapod to build the app,
-or `buck install` antennapod to install it if `adb devices` is not
-empty.
+Now you should be able to run `{call buck.cmd_build /} antennapod` to
+build the app, or `{call buck.cmd_install /} antennapod` to install it
+if `adb devices` is not empty.
 
 ## Step 5: Build Buck\'s Android support library {#build-buck-support-library}
 
-[View on GitHub:
-[1f1b375624664ac1cdc82668a4b952c6f332bdb0](https://github.com/facebookarchive/AntennaPod/commit/1f1b375624664ac1cdc82668a4b952c6f332bdb0)]{style="font-size: 80%"}
+{call .gitHubCommit} {param sha1 : \$step5sha1 /} {/call}
 
 In order for your app to use exopackage, it needs to use Buck\'s Java
 library that provides support for it. You can easily build this library
 from source from your checkout of Buck as follows:
 
+    {literal}
     # Run this from the root of your checkout of Buck, not from AntennaPod.
     buck build --out buck-android-support.jar buck-android-support
+    {/literal}
 
 Once you have built it, move it over to AntennaPod\'s `libs` directory,
 just like the other third party JAR files:
 
+    {literal}
     mv buck-android-support.jar path/to/AntennaPod/libs
+    {/literal}
 
 ## Step 6: Modify AntennaPod to use exopackage {#use-exopackage}
 
-[View on GitHub:
-[4250292b4d4742d40a9b06ce638741b2873210f1](https://github.com/facebookarchive/AntennaPod/commit/4250292b4d4742d40a9b06ce638741b2873210f1)]{style="font-size: 80%"}
+{call .gitHubCommit} {param sha1 : \$step6sha1 /} {/call}
 
 On a high level, the main thing that you need to do to leverage
 exopackage is change the insertion point of your app from the existing
-`android.app.Application` that your app uses to an
-[`ExopackageApplication`](http://buck.build/javadoc/com/facebook/buck/android/support/exopackage/ExopackageApplication.html)
-that delegates to your original `Application`. This level of indirection
-is what makes it possible for exopackage to dynamically load the code
-for your application in debug mode. In release mode,
-[`ExopackageApplication`](http://buck.build/javadoc/com/facebook/buck/android/support/exopackage/ExopackageApplication.html)
-expects all of the code for your app to be present in the APK, so it
-skips the step where it tries to dynamically load code.
+`android.app.Application` that your app uses to an {call
+.ExopackageApplication /} that delegates to your original `Application`.
+This level of indirection is what makes it possible for exopackage to
+dynamically load the code for your application in debug mode. In release
+mode, {call .ExopackageApplication /} {sp}expects all of the code for
+your app to be present in the APK, so it skips the step where it tries
+to dynamically load code.
 
 If your app has a class that subclasses `android.app.Application` that
-is listed as the main app in `AndroidManifest.xml` via the
+is listed as the main app in `AndroidManifest.xml` via the{sp}
 `<application name>` attribute, then the first thing that you need to do
-is modify that class so it extends
-[`DefaultApplicationLike`](http://buck.build/javadoc/com/facebook/buck/android/support/exopackage/DefaultApplicationLike.html)
+is modify that class so it extends {call .DefaultApplicationLike /}{sp}
 rather than `Application`:
 
+    {literal}
     -public class PodcastApp extends Application {
     +public class PodcastApp extends DefaultApplicationLike {
+    {/literal}
 
-Further, your
-[`DefaultApplicationLike`](http://buck.build/javadoc/com/facebook/buck/android/support/exopackage/DefaultApplicationLike.html)
-must declare a constructor that takes an `Application` as its only
-parameter. You most likely want to store it as a field:
+Further, your {call .DefaultApplicationLike /} must declare a
+constructor that takes an `Application` as its only parameter. You most
+likely want to store it as a field:
 
 ``` {.prettyprint .lang-java}
+{literal}
   private final Application appContext;
 
   public PodcastApp(Application appContext) {
     this.appContext = appContext;
   }
+{/literal}
 ```
 
 Now all methods that previously accessed the API of `Application` via
 inheritance can delegate to the `appContext` instance instead:
 
+    {literal}
     -LOGICAL_DENSITY = getResources().getDisplayMetrics().density;
     +LOGICAL_DENSITY = appContext.getResources().getDisplayMetrics().density;
+    {/literal}
 
 Now you must create your new `Application` class, which will be a
-subclass of
-[`ExopackageApplication`](http://buck.build/javadoc/com/facebook/buck/android/support/exopackage/ExopackageApplication.html).
-As you can see from its API, it is an `abstract` class that does not
-have a default constructor, so you must define a no-arg constructor as
-follows:
+subclass of {call .ExopackageApplication /}. As you can see from its
+API, it is an `abstract` class that does not have a default constructor,
+so you must define a no-arg constructor as follows:
 
 ``` {.prettyprint .lang-java}
+{literal}
   package de.danoeh.antennapod;
 
   import com.facebook.buck.android.support.exopackage.ExopackageApplication;
@@ -467,6 +485,7 @@ follows:
         de.danoeh.antennapod.BuildConfig.EXOPACKAGE_FLAGS);
     }
   }
+{/literal}
 ```
 
 Alternatively, if your original app did not have a custom subclass of
@@ -475,6 +494,7 @@ implementation of `ApplicationLike`. You must still create a subclass of
 `ExopackageApplication`, but now your implementation can be simpler:
 
 ``` {.prettyprint .lang-java}
+{literal}
   package de.danoeh.antennapod;
 
   import com.facebook.buck.android.support.exopackage.ExopackageApplication;
@@ -485,15 +505,16 @@ implementation of `ApplicationLike`. You must still create a subclass of
       super(de.danoeh.antennapod.BuildConfig.EXOPACKAGE_FLAGS);
     }
   }
+{/literal}
 ```
 
 Now the more sophisticated changes will be in the `BUCK` file where you
-defined your [`android_binary`](/rule/android_binary.html) rule. First,
-you will need to create an
-[`android_library`](/rule/android_library.html) that builds your
-[`ExopackageApplication`](http://buck.build/javadoc/com/facebook/buck/android/support/exopackage/ExopackageApplication.html):
+defined your {call buck.android_binary /} rule. First, you will need to
+create an {call buck.android_library /} that builds your {call
+.ExopackageApplication /}:
 
 ``` {.prettyprint .lang-py}
+{literal}
   APP_CLASS_SOURCE = 'src/de/danoeh/antennapod/AppShell.java'
 
   android_library(
@@ -510,20 +531,23 @@ you will need to create an
       ':jars__buck-android-support',
     ],
   )
+{/literal}
 ```
 
-If you have an existing [`android_library`](/rule/android_library.html)
-rule that [`glob()`](/function/glob.html)s your
-[`ExopackageApplication`](http://buck.build/javadoc/com/facebook/buck/android/support/exopackage/ExopackageApplication.html)\'s
-source file, then make sure to exclude it:
+If you have an existing {call buck.android_library /} rule that {call
+buck.fn_glob /}s your {call .ExopackageApplication /}\'s source file,
+then make sure to exclude it:
 
+    {literal}
     -  srcs = glob(['src/de/**/*.java']),
     +  srcs = glob(['src/de/**/*.java'], excludes = [APP_CLASS_SOURCE]),
+    {/literal}
 
 The biggest change to your `BUCK` file will be the new arguments to your
-[`android_binary`](/rule/android_binary.html) rule (new lines are
-highlighted in [green]{style="color:green"}):
+{call buck.android_binary /} rule (new lines are highlighted in
+[green]{style="color:green"}):
 
+    {literal}
     android_binary(
       name = 'antennapod',
       manifest = 'AndroidManifest.xml',
@@ -540,6 +564,7 @@ highlighted in [green]{style="color:green"}):
         ':main-lib',
       ],
     )
+    {/literal}
 
 As you might have guessed, `primary_dex_patterns` is a pattern that
 identifies which `.class` files from the transitive `deps` that must be
@@ -547,25 +572,29 @@ included in the shell app that bootstraps the rest of the app. As such,
 these patterns match the transitive deps of `:application-lib`.
 
 Setting `exopackage_modes = ['secondary_dex']` is what ensures that
-`BuildConfig.EXOPACKAGE_FLAGS` will be set correctly, in addition to the
-other packaging changes that Buck makes to support exopackage. This must
-used with `use_split_dex = True` because using exopackage requires
+{sp}`BuildConfig.EXOPACKAGE_FLAGS` will be set correctly, in addition to
+the other packaging changes that Buck makes to support exopackage. This
+must used with `use_split_dex = True` because using exopackage requires
 dividing the app into multiple dex files.
 
 Finally, you must update your `AndroidManifest.xml` to refer to the
 `ExopackageApplication` as the new entry point into your app:
 
+    {literal}
     -android:name="de.danoeh.antennapod.PodcastApp"
     +android:name="de.danoeh.antennapod.AppShell"
+    {/literal}
 
 ## Step 7: Profit! {#profit}
 
 Now your development cycle should be as follows:
 
+    {literal}
     buck install --run antennapod
     # Edit your application's Java code.
     buck install --run antennapod
     # Watch in amazement as your changes are loaded faster than ever before!
+    {/literal}
 
 ## Caveats
 
@@ -575,17 +604,17 @@ full reinstall. This is something we hope to improve in the future.
 
 Be aware of the following limitations when using Buck and exopackage:
 
--   You cannot use `adb install` for exopackages. You must use
-    [`buck install`](/command/install.html).
--   You should use [`buck uninstall`](/command/uninstall.html) instead
-    of `adb uninstall` to uninstall the app. Otherwise, unnecessary
-    files will be left in `/data/local/tmp`. You can remove them with
+-   You cannot use `adb install` for exopackages. You must use {call
+    buck.cmd_install /}.
+-   You should use {call buck.cmd_uninstall /} instead of
+    `adb uninstall` to uninstall the app. Otherwise, unnecessary files
+    will be left in `/data/local/tmp`. You can remove them with
     `adb shell rm -r /data/local/tmp/exopackage/$PACKAGE_NAME`.
--   Some devices are not compatible with the exopackage installer. [See
-    below](#incompatible-devices).
+-   Some devices are not compatible with the exopackage installer.
+    {sp}[See below](#incompatible-devices).
 -   Install to SD card does not work right now.
 -   Exopackages will not start up for non-primary users on a multi-user
-    android device.
+    android device. // (TODO: This might not be true any more.)
 -   When you do an install, system notifications and alarms will **not**
     be cleared, so you might get an intent back from them with the old
     version of your `Parcelable`, which could cause a crash or other
@@ -600,208 +629,15 @@ with exopackage:
 
 -   Some AOSP builds between the KitKat release and L Preview.
 
-You might want to keep two versions of your
-[`android_binary`](/rule/android_binary.html) rule in your `BUCK` files:
-one that uses exopackage and one that does not. That way, you will
-always have a way to test on devices that do not support exopackage.
-:::
-
-### The Basics
-
--   [Getting Started](/setup/getting_started.html)
--   [Key Concepts](/about/overview.html)
--   [Tutorial](/learning/tutorial.html)
--   [Installing the IntelliJ
-    Plugin](/setup/intellij_plugin_install.html)
--   [Exopackage](/article/exopackage.html)
--   [Buck Cheat Sheet](/article/query_cheat_sheet.html)
-
-### About
-
--   [What Makes Buck so Fast?](/concept/what_makes_buck_so_fast.html)
--   [Showcase](/about/showcase.html)
--   [Troubleshooting](/concept/troubleshooting.html)
--   [Performance Tuning](/about/performance_tuning.html)
--   [FAQ](/concept/faq.html)
--   [Learn More (Buck Presentations)](/presentations/index.html)
-
-### Concepts
-
--   [Build Rule](/concept/build_rule.html)
--   [Build File](/concept/build_file.html)
--   [Build Target](/concept/build_target.html)
--   [Build Target Pattern](/concept/build_target_pattern.html)
--   [Buck Daemon (buckd)](/concept/buckd.html)
--   [Visibility](/concept/visibility.html)
--   [Flavors](/concept/flavors.html)
--   [HTTP Cache API](/concept/http_cache_api.html)
--   [Rule Keys](/concept/rule_keys.html)
--   [Java ABIs](/concept/java_abis.html)
--   [Skylark](/concept/skylark.html)
-
-### Files and Directories
-
--   [.buckconfig](/files-and-dirs/buckconfig.html)
--   [.buckjavaargs](/files-and-dirs/buckjavaargs.html)
--   [buck-out](/files-and-dirs/buck-out.html)
-
-### Commands
-
--   [Common Parameters](/command/common_parameters.html)
--   [buck audit](/command/audit.html)
--   [buck build](/command/build.html)
--   [buck clean](/command/clean.html)
--   [buck doctor](/command/doctor.html)
--   [buck fetch](/command/fetch.html)
--   [buck fix](/command/fix.html)
--   [buck install](/command/install.html)
--   [buck kill](/command/kill.html)
--   [buck killall](/command/killall.html)
--   [buck project](/command/project.html)
--   [buck publish](/command/publish.html)
--   [buck query](/command/query.html)
--   [buck run](/command/run.html)
--   [buck root](/command/root.html)
--   [buck server](/command/server.html)
--   [buck targets](/command/targets.html)
--   [buck test](/command/test.html)
--   [buck uninstall](/command/uninstall.html)
--   [Exit Codes](/command/exit_codes.html)
-
-### Build Rules {#build-rules-1}
-
--   **Core**
--   [command_alias()](/rule/command_alias.html)
--   [export_file()](/rule/export_file.html)
--   [filegroup()](/rule/filegroup.html)
--   [genrule()](/rule/genrule.html)
--   [http_archive()](/rule/http_archive.html)
--   [http_file()](/rule/http_file.html)
--   [remote_file()](/rule/remote_file.html)
--   [test_suite()](/rule/test_suite.html)
--   [worker_tool()](/rule/worker_tool.html)
--   [zip_file()](/rule/zip_file.html)
--   **Android**
--   [android_aar()](/rule/android_aar.html)
--   [android_binary()](/rule/android_binary.html)
--   [android_build_config()](/rule/android_build_config.html)
--   [android_instrumentation_apk()](/rule/android_instrumentation_apk.html)
--   [android_instrumentation_test()](/rule/android_instrumentation_test.html)
--   [android_library()](/rule/android_library.html)
--   [android_manifest()](/rule/android_manifest.html)
--   [android_prebuilt_aar()](/rule/android_prebuilt_aar.html)
--   [android_resource()](/rule/android_resource.html)
--   [apk_genrule()](/rule/apk_genrule.html)
--   [gen_aidl()](/rule/gen_aidl.html)
--   [keystore()](/rule/keystore.html)
--   [ndk_library()](/rule/ndk_library.html)
--   [prebuilt_jar()](/rule/prebuilt_jar.html)
--   [prebuilt_native_library()](/rule/prebuilt_native_library.html)
--   [robolectric_test()](/rule/robolectric_test.html)
--   **CXX**
--   [cxx_binary()](/rule/cxx_binary.html)
--   [cxx_library()](/rule/cxx_library.html)
--   [cxx_genrule()](/rule/cxx_genrule.html)
--   [cxx_precompiled_header()](/rule/cxx_precompiled_header.html)
--   [cxx_test()](/rule/cxx_test.html)
--   [prebuilt_cxx_library()](/rule/prebuilt_cxx_library.html)
--   [prebuilt_cxx_library_group()](/rule/prebuilt_cxx_library_group.html)
--   **D**
--   [d_binary()](/rule/d_binary.html)
--   [d_library()](/rule/d_library.html)
--   [d_test()](/rule/d_test.html)
--   **Go**
--   [go_binary()](/rule/go_binary.html)
--   [go_library()](/rule/go_library.html)
--   [go_test()](/rule/go_test.html)
--   [cgo_library()](/rule/cgo_library.html)
--   **Groovy**
--   [groovy_library()](/rule/groovy_library.html)
--   **Halide**
--   [halide_library()](/rule/halide_library.html)
--   **Haskell**
--   [haskell_binary()](/rule/haskell_binary.html)
--   [haskell_library()](/rule/haskell_library.html)
--   [prebuilt_haskell_library()](/rule/prebuilt_haskell_library.html)
--   **iOS**
--   [apple_asset_catalog()](/rule/apple_asset_catalog.html)
--   [apple_binary()](/rule/apple_binary.html)
--   [apple_bundle()](/rule/apple_bundle.html)
--   [apple_library()](/rule/apple_library.html)
--   [apple_package()](/rule/apple_package.html)
--   [apple_resource()](/rule/apple_resource.html)
--   [apple_test()](/rule/apple_test.html)
--   [core_data_model()](/rule/core_data_model.html)
--   [prebuilt_apple_framework()](/rule/prebuilt_apple_framework.html)
--   **Java**
--   [java_binary()](/rule/java_binary.html)
--   [java_library()](/rule/java_library.html)
--   [java_test()](/rule/java_test.html)
--   [prebuilt_jar()](/rule/prebuilt_jar.html)
--   [prebuilt_native_library()](/rule/prebuilt_native_library.html)
--   **Kotlin**
--   [kotlin_library()](/rule/kotlin_library.html)
--   [kotlin_test()](/rule/kotlin_test.html)
--   **Lua**
--   [cxx_lua_extension()](/rule/cxx_lua_extension.html)
--   [lua_binary()](/rule/lua_binary.html)
--   [lua_library()](/rule/lua_library.html)
--   **OCaml**
--   [ocaml_binary()](/rule/ocaml_binary.html)
--   [ocaml_library()](/rule/ocaml_library.html)
--   **Python**
--   [prebuilt_python_library()](/rule/prebuilt_python_library.html)
--   [python_binary()](/rule/python_binary.html)
--   [python_library()](/rule/python_library.html)
--   [python_test()](/rule/python_test.html)
--   **Rust**
--   [rust_binary()](/rule/rust_binary.html)
--   [rust_library()](/rule/rust_library.html)
--   [rust_test()](/rule/rust_test.html)
--   [prebuilt_rust_library()](/rule/prebuilt_rust_library.html)
--   **Shell**
--   [sh_binary()](/rule/sh_binary.html)
--   [sh_test()](/rule/sh_test.html)
--   **.NET**
--   [csharp_library()](/rule/csharp_library.html)
--   [prebuilt_dotnet_library()](/rule/prebuilt_dotnet_library.html)
-
-### Functions
-
--   **Python DSL**
--   [add_build_file_dep()](/function/add_build_file_dep.html)
--   [allow_unsafe_import()](/function/allow_unsafe_import.html)
--   [flatten_dicts()](/function/flatten_dicts.html)
--   [glob()](/function/glob.html)
--   [get_base_path()](/function/get_base_path.html)
--   [get_cell_name()](/function/get_cell_name.html)
--   [host_info()](/function/host_info.html)
--   [include_defs()](/function/include_defs.html)
--   [load()](/function/load.html)
--   [read_config()](/function/read_config.html)
--   [subdir_glob()](/function/subdir_glob.html)
--   [String Parameter Macros](/function/string_parameter_macros.html)
-
-```{=html}
-<!-- -->
-```
--   **Skylark**
--   [glob()](/skylark/generated/glob.html)
--   [host_info()](/skylark/generated/host_info.html)
--   [package_name()](/skylark/generated/package_name.html)
--   [provider()](/skylark/generated/provider.html)
--   [read_config()](/skylark/generated/read_config.html)
--   [repository_name()](/skylark/generated/repository_name.html)
--   [rule_exists()](/skylark/generated/rule_exists.html)
-
-### Extending Buck
-
--   [Custom Macros](/extending/macros.html)
--   [Custom Rules](/extending/rules.html)
--   [Building E2E Tests for Buck](/extending/e2e_tests.html)
-:::
-:::
-
-::: width
-© Copyright Facebook, 2013 - 2020
-:::
+You might want to keep two versions of your {call buck.android_binary /}
+rule in your `BUCK` files: one that uses exopackage and one that does
+not. That way, you will always have a way to test on devices that do not
+support exopackage. {/param} {/call} {/template} /\*\*\*/ {template
+.ExopackageApplication}
+[`ExopackageApplication`](http://buck.build/javadoc/com/facebook/buck/android/support/exopackage/ExopackageApplication.html)
+{/template} /\*\*\*/ {template .DefaultApplicationLike}
+[`DefaultApplicationLike`](http://buck.build/javadoc/com/facebook/buck/android/support/exopackage/DefaultApplicationLike.html)
+{/template} /\*\* \* \@param sha1 \*/ {template .gitHubCommit} [ View on
+GitHub:
+[{\$sha1}](https://github.com/facebookarchive/AntennaPod/commit/%7B$sha1%7D)
+]{style="font-size: 80%"} {/template}
